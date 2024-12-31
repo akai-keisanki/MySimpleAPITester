@@ -1,11 +1,12 @@
 import requests
 
-req_mets : dict[callable] = {
-        'GET' : requests.get,
-        'POST' : requests.post,
-        'PUT' : requests.put,
-        'DELETE' : requests.delete,
-    }
+def req_mets(s : requests.Session) -> dict[callable]:
+    return {
+            'GET' : s.get,
+            'POST' : s.post,
+            'PUT' : s.put,
+            'DELETE' : s.delete
+        }
 
 stt_cods : dict[callable] = {
         100 : 'Continue',
