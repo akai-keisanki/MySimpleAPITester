@@ -1,3 +1,5 @@
+import os
+import dotenv
 import requests
 
 def req_mets(s : requests.Session) -> dict[callable]:
