@@ -1,6 +1,8 @@
 from terciary import *
 
-def req(met : str, url : str, pr : str = '{}', js : str = '{}') -> requests.models.Response:
+def req(s : requests.Session, met : str, url : str, pr : str = '{}', js : str = '{}') -> requests.models.Response:
+
+    reqmets = req_mets(s)
 
     try:
         json = eval(js)
@@ -9,12 +11,12 @@ def req(met : str, url : str, pr : str = '{}', js : str = '{}') -> requests.mode
         print('Error while evaluating data')
         return
 
-    if met not in req_mets.keys():
+    if met not in reqmets.keys():
         print('Error while trying to get request method.')
         return
 
     try:
-        return req_mets[met](url, params = params, json = json)
+        return reqmets[met](url, params = params, json = json)
     except:
         print('Error while requesting')
         return
@@ -30,5 +32,6 @@ def show_req(r : requests.models.Response) -> None:
     try: tmp += ' - ' + stt_cods[r.status_code]
     except: pass
     finally:
+        print(f'<- url     : {r.url}')
         print(f'<- status  : {r.status_code}{tmp}')
         print(f'<- text    : \n----------------\n{r.text}\n----------------')
