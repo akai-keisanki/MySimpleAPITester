@@ -3,6 +3,7 @@ import requests
 req_mets : dict[callable] = {
         'GET' : requests.get,
         'POST' : requests.post,
+        'PUT' : requests.put,
         'DELETE' : requests.delete,
     }
 
@@ -79,7 +80,22 @@ stt_cods : dict[callable] = {
 
 def req(met : str, url : str, pr : str = '{}', js : str = '{}') -> requests.models.Response:
 
-    return req_mets[met](url, params = eval(pr), json = eval(js))
+    try:
+        json = eval(js)
+        params = eval(pr)
+    except:
+        print('Error while evaluating data')
+        return
+
+    if met not in req_mets.keys():
+        print('Error while trying to get request method.')
+        return
+
+    try:
+        return req_mets[met](url, params = params, json = json)
+    except:
+        print('Error while requesting')
+        return
 
 def show_req(r : requests.models.Response) -> None:
 
